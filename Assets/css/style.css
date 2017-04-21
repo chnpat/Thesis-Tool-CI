@@ -1,0 +1,10 @@
+.panel-noborder{
+	border-radius: 0 !important;
+	border-color: transparent;
+	margin-bottom: 0 !important;
+}
+
+.container{
+	max-width: 100%;
+	padding-top: 15px;
+}
