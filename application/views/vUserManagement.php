@@ -5,28 +5,33 @@
         <small>Management</small>
       </h1>
     </section>
-    <section class="container">
-    <?php if($this->session->flashdata('user_manage_msg')){ ?>
-    	<div class="alert alert-dismissible alert-success">
-			<button type="button" class="close" data-dismiss="alert">&times;</button>
-			<strong>Saved!</strong> <?php echo $this->session->flashdata('user_manage_msg'); ?>
+    <section class="content">
+    	<div class="col-12">
+			<?php if($this->session->flashdata("user_msg")){ ?>
+		    	<div class="alert alert-dismissible alert-success">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					<strong>Saved!</strong> <?php echo $this->session->flashdata("user_msg"); ?>
+				</div>
+		    <?php } ?>
+		    <?php if($this->session->flashdata("user_error")){ ?>
+		    	<div class="alert alert-dismissible alert-danger">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					<strong>Error!</strong> <?php echo $this->session->flashdata("user_error"); ?>
+				</div>
+		    <?php } ?>
 		</div>
-    <?php } ?>
-    <?php if($this->session->flashdata('user_manage_error')){ ?>
-    	<div class="alert alert-dismissible alert-danger">
-			<button type="button" class="close" data-dismiss="alert">&times;</button>
-			<strong>Error!</strong> <?php echo $this->session->flashdata('user_manage_error'); ?>
-		</div>
-    <?php } ?>
-    <div class="col-xs-12">
 	    <div class="box box-primary">
-	    	<div class="box-body table-responsive no-padding">
+	    	<div class="box-body table-responsive">
 		    	<div class="panel panel-default panel-noborder">
-					<div class="panel-body">
-				    	<div class="col-md-4"></div>
-				    	<div class="col-md-4"></div>
-				    	<div class="col-md-4 text-right">
-				    		<a href="<?php echo base_url(); ?>cUserManagement/user_detail" class="btn btn-success btn-sm "><i class="fa fa-plus"> Add a user</i></a>
+					<div class="panel-body no-padding">
+						<div class="row">
+					    	<div class="col-md-4"></div>
+					    	<div class="col-md-4"></div>
+					    	<div class="col-md-4 text-right">
+				    			<a href="<?php echo base_url(); ?>cUserManagement/user_detail" class="btn btn-success btn-sm">
+				    				<i class="fa fa-plus"> Add a user</i>
+				    			</a>
+					    	</div>
 				    	</div>
 					</div>
 				</div>
@@ -65,14 +70,14 @@
 		    				}
 		    				echo "<td>";
 		    		?>
-		    			<a href="<?php echo base_url(); ?>cUserManagement/user_detail/<?php echo $row['id']; ?>" class="btn btn-warning btn-sm">
+		    			<a href="<?php echo base_url(); ?>cUserManagement/user_detail/<?php echo $row['id']; ?>" class="btn btn-warning btn-xs">
 		    				<i class="fa fa-edit"></i> Edit
 		    			</a>
-		    			<a href="javascript:void(0);" onclick="deleteThis(<?php echo $row['id']; ?>);" class="btn btn-danger">
+		    			<a href="javascript:void(0);" onclick="deleteThis(<?php echo $row['id']; ?>);" class="btn btn-danger btn-xs">
 		    				<i class="fa fa-trash"></i> Delete
 		    				</a>
 		    		<?php
-		    				echo "</tr>";
+		    				echo "</td></tr>";
 		    			} 
 	    			}?>
 	    		</table>
@@ -89,5 +94,5 @@
 				</script>
 	    	</div>
 	    </div>
-    </div>
+    </section>
 </div>

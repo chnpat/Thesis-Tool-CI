@@ -71,11 +71,13 @@
 					);	
 				$result = $this->mLogin->create_user($data); // insert data into database
 				if($result == TRUE){
-					$this->session->set_flashdata('user_manage_msg', 'Add a user ('.$data['user_email'].') successfully!');
+					//echo "<script type='text/javascript'>alert('A user (".$data['user_email'].") has been added successfully!')</script>";
+					$this->session->set_flashdata('user_msg', "A user (".$data['user_email'].") has been added successfully!");
 					$this->index();	// reload the index function and redirect to the dashboard
 				}
 				else{
-					echo "<script type='text/javascript'>alert('Email (".$data['user_email'].") has already been used!')</script>";
+					$this->session->set_flashdata("error", "Email (".$data['user_email'].") has already been used!");
+					//echo "<script type='text/javascript'>alert('Email (".$data['user_email'].") has already been used!')</script>";
 					$this->user_detail();	// Show erro message in case the email is used
 				}
 			}
@@ -118,11 +120,13 @@
 					);	
 				$result = $this->mLogin->update_user($data); // insert data into database
 				if($result == TRUE){
-					$this->session->set_flashdata('user_manage_msg', 'Update a user ('.$data['user_email'].') successfully!');
+					$this->session->set_flashdata("user_msg", "A user (".$data['user_email'].") has been updated successfully!");
+					//echo "<script type='text/javascript'>alert('A user (".$data['user_email'].") has been updated successfully!')</script>";
 					$this->index();	// reload the index function and redirect to the dashboard
 				}
 				else{
-					echo "<script type='text/javascript'>alert('Email (".$data['user_email'].") has already been used!')</script>";
+					$this->session->set_flashdata("error", "Email (".$data['user_email'].") has already been used!");
+					//echo "<script type='text/javascript'>alert('Email (".$data['user_email'].") has already been used!')</script>";
 					$this->user_detail();	// Show erro message in case the email is used
 				}
 			}
@@ -130,11 +134,13 @@
 
 		public function delete_user($id){
 			if($this->mLogin->delete_user($id)){
-				$this->session->set_flashdata('user_manage_msg', 'Delete user id: '.$id.' successfully!');
+				$this->session->set_flashdata("user_msg", "A user (ID:".$id.") has been deleted successfully!");
+				//echo "<script type='text/javascript'>alert('A user (ID:".$id.") has been deleted successfully!')</script>";
 				$this->index();
 			}
 			else{
-				$this->session->set_flashdata('user_manage_error', 'Delete user id: '.$id.' failed!');
+				$this->session->set_flashdata("user_error", "Delete user id: ".$id." failed!");
+				//echo "<script type='text/javascript'>alert('Delete user id: ".$id." failed!')</script>";
 				$this->index();
 			}
 		}

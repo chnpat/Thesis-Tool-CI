@@ -12,8 +12,6 @@
     	-->
     	<!-- Bootstrap Paper Theme -->
         <link rel="stylesheet" type="text/css" href="<?php echo CSS; ?>bootstrap.min.css" >
-        <!-- Defined style sheet -->
-        <link rel="stylesheet" type="text/css" href="<?php echo CSS; ?>style.css">
         <!-- FontAwesome 4.3.0 -->
         <link rel="stylesheet" type="text/css" href="<?php echo URL; ?>assets/font-awesome/css/font-awesome.min.css">
         <!-- Ionicons 2.0.0 -->
@@ -23,6 +21,8 @@
     	<!-- AdminLTE Skins. Choose a skin from the css/skins 
          folder instead of downloading all of them to reduce the load. -->
     	<link href="<?php echo URL; ?>assets/dist/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />
+    	<!-- Defined style sheet -->
+        <link rel="stylesheet" type="text/css" href="<?php echo CSS; ?>style.css">
 
 
         <!-- 
@@ -37,6 +37,7 @@
     	<script type="text/javascript">
         	var baseURL = "<?php echo base_url(); ?>";
     	</script>
+    	<script type="text/javascript" src="<?php echo base_url(); ?>assets/plugins/ckeditor/ckeditor.js"></script>
     </head>
     <body class="skin-red sidebar-mini">
     	<div class="wrapper">

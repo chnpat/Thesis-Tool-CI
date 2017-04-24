@@ -5,7 +5,7 @@
         <small>Detail</small>
       </h1>
     </section>
-    <section class="container">
+    <section class="content">
     	<div class="row">
             <!-- left column -->
             <div class="col-md-12">
@@ -26,14 +26,14 @@
                                 <div class="col-md-6">                                
                                     <div class="form-group">
                                         <label for="fname">Full Name</label>
-                                        <input type="text" class="form-control required" id="fname" name="fname" maxlength="128" value="<?php echo $userDetail['user_name']; ?>">
+                                        <input type="text" class="form-control required" id="fname" name="fname" maxlength="128" value="<?php echo $userDetail['user_name']; ?>" placeholder="e.g. John Doe">
                                     </div>
                                     
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="email">Email address</label>
-                                        <input type="text" class="form-control required email" id="email"  name="email" maxlength="128" value="<?php echo $userDetail['user_email']; ?>">
+                                        <input type="text" class="form-control required email" id="email"  name="email" maxlength="128" value="<?php echo $userDetail['user_email']; ?>" placeholder="e.g. John@Doe.com">
                                     </div>
                                 </div>
                             </div>
@@ -41,13 +41,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="password">Password</label>
-                                        <input type="password" class="form-control required" id="password"  name="password" value="<?php echo $userDetail['user_password']; ?>">
+                                        <input type="password" class="form-control required" id="password"  name="password" value="<?php echo $userDetail['user_password']; ?>" placeholder="Password">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="cpassword">Confirm Password</label>
-                                        <input type="password" class="form-control required equalTo" id="cpassword" name="cpassword" value="<?php echo $userDetail['user_password']; ?>">
+                                        <input type="password" class="form-control required equalTo" id="cpassword" name="cpassword" value="<?php echo $userDetail['user_password']; ?>" placeholder="Password">
                                     </div>
                                 </div>
                             </div>
