@@ -165,7 +165,7 @@
 	                    <div class="box-footer">
                             <input type="submit" class="btn btn-primary" value="Submit" />
                             <?php if(!empty($rows)) { ?>
-                            	<a href="<?php echo base_url()."cPattern/index" ?>" class="btn btn-default">Go back</a>
+                            	<a href="<?php echo base_url()."cPattern/index"; ?>" class="btn btn-default">Go back</a>
                             <?php } else { ?>
                             	<input type="reset" class="btn btn-default" value="Reset" />
                             <?php } ?>

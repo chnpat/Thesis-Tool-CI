@@ -64,7 +64,7 @@
 		    				}
 		    				echo "<td>"
 		    		?>
-		    			<a href="<?php echo base_url(); ?>cPattern/desc_version_list/<?php echo $row['pattern_id']; ?>" class="btn btn-primary btn-xs">
+		    			<a href="<?php echo base_url(); ?>cPatternDesc/index/<?php echo $row['pattern_id']; ?>" class="btn btn-primary btn-xs">
 		    				<i class="fa fa-newspaper-o"></i> Description
 		    			</a>
 		    			<a href="<?php echo base_url(); ?>cPattern/pattern_detail/<?php echo $row['pattern_id']; ?>" class="btn btn-warning btn-xs">

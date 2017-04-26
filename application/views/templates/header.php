@@ -23,6 +23,7 @@
     	<link href="<?php echo URL; ?>assets/dist/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />
     	<!-- Defined style sheet -->
         <link rel="stylesheet" type="text/css" href="<?php echo CSS; ?>style.css">
+        <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/plugins/ckeditor/lib/highlight/styles/default.css"> -->
 
 
         <!-- 
@@ -38,6 +39,7 @@
         	var baseURL = "<?php echo base_url(); ?>";
     	</script>
     	<script type="text/javascript" src="<?php echo base_url(); ?>assets/plugins/ckeditor/ckeditor.js"></script>
+    	<!-- <script type="text/javascript" src="<?php echo base_url(); ?>assets/plugins/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js"></script> -->
     </head>
     <body class="skin-red sidebar-mini">
     	<div class="wrapper">
