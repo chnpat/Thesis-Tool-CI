@@ -6,7 +6,8 @@
 		
 		public function __construct(){
 			parent::__construct();
-			$this->load->model('mDBConnection', 'd');
+			$this->load->model('mDBConnection','d');
+			$this->load->model('mPatternDesc', 'pd');
 		}
 
 		public function create_pattern($data){
@@ -35,10 +36,19 @@
 			return $pattern;
 		}
 
-		public function get_pattern_reach_limit_assess($num){
-			return array_filter($this->get_pattern_all(), function($pat) use($num){
-				return $pat['pattern_assess_limit'] <= $num;
+		public function get_pattern_unreach_limit_assess(){
+			$pat_list = $this->get_pattern_all();
+			if(!is_bool($pat_list)){
+				return array_filter($pat_list, function($pat) {
+					$cond = "pattern_id ='".$pat['pattern_id']."' AND desc_version =".(float)$pat['pattern_assess_version'];
+					$counter = $this->d->select('desc_assess_count', $cond, 'pattern_description')[0]['desc_assess_count'];
+
+					return (($pat['pattern_assess_limit'] == 0)? true:($counter < $pat['pattern_assess_limit'])) AND $pat['pattern_status'] == 'Ready';
 			});
+			}
+			else{
+				return $pat_list;
+			}
 		}
 
 		public function update_pattern($data){

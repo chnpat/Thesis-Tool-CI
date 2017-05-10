@@ -24,14 +24,14 @@
             <!-- left column -->
             <div class="col-md-12">
               	<!-- general form elements -->
-                <div class="box box-primary">
+                <div class="box box-danger">
                     <div class="box-header">
                         <h3 class="box-title">Add/Edit Pattern Description Details</h3>
                     </div><!-- /.box-header -->
                     <ul class="nav nav-tabs">
-                    	<li class="<?php echo ($tabs == NULL)?'active':''; ?>"><a href="#desc_form" data-toggle="tab" aria-expanded="false">Description Form</a></li>
+                    	<li class="<?php echo ($tabs == NULL)?'active':''; ?>"><a href="#desc_form" data-toggle="tab" aria-expanded="false" class="text text-danger">Description Form</a></li>
                     	<?php if(!empty($rows)) { ?>
-                    	<li class="<?php echo ($tabs == true)? 'active': ''; ?>"><a href="#desc_img" data-toggle="tab" aria-expanded="false">Image Upload</a></li>
+                    	<li class="<?php echo ($tabs == true)? 'active': ''; ?>"><a href="#desc_img" data-toggle="tab" aria-expanded="false" class="text text-danger">Image Upload</a></li>
                     	<?php } ?>
                     </ul>
                     <div id="myTabContent" class="tab-content">
@@ -231,6 +231,50 @@
 			                    			</div>
 			                    		</div>
 			                    	</div>
+			                    	<div class="row">
+			                    		<div class="col-md-3">
+			                    			<div class="form-group">
+			                    				<label for="desc_diagram">Diagram Contained</label>
+			                    			</div>
+			                    		</div>
+			                    		<div class="col-md-9">
+			                    			<div class="form-group col-md-6">
+			                    				<div class="checkbox">
+			                    					<label>
+			                    						<input type="checkbox" name="is_UCD" id="is_UCD" value="Y" <?php echo ($rows['is_UCD'] == true)? "checked=''": ""; ?> />Use Case Diagram
+			                    					</label>
+			                    				</div>
+			                    			</div>
+			                    			<div class="form-group col-md-6">
+			                    				<div class="checkbox">
+			                    					<label>
+			                    						<input type="checkbox" name="is_AD" id="id_AD" value="Y" <?php echo ($rows['is_AD'] == true)? "checked=''": ""; ?> />Activity Diagram
+			                    					</label>
+			                    				</div>
+			                    			</div>
+			                    			<div class="form-group col-md-6">
+			                    				<div class="checkbox">
+			                    					<label>
+			                    						<input type="checkbox" name="is_CD" id="is_CD" value="Y" <?php echo ($rows['is_CD'] == true)? "checked=''": ""; ?> />Class Diagram
+			                    					</label>
+			                    				</div>
+			                    			</div>
+			                    			<div class="form-group col-md-6">
+			                    				<div class="checkbox">
+			                    					<label>
+			                    						<input type="checkbox" name="is_SD" id="id_SD" value="Y" <?php echo ($rows['is_SD'] == true)? "checked=''": ""; ?> />Sequence Diagram
+			                    					</label>
+			                    				</div>
+			                    			</div>
+			                    			<div class="form-group col-md-6">
+			                    				<div class="checkbox">
+			                    					<label>
+			                    						<input type="checkbox" name="is_BSM" id="is_BSM" value="Y" <?php echo ($rows['is_BSM'] == true)? "checked=''": ""; ?> />Behavioral State Machine
+			                    					</label>
+			                    				</div>
+			                    			</div>
+			                    		</div>
+			                    	</div>
 			                    </div>
 			                    <div class="box-footer">
 		                            <input type="submit" class="btn btn-primary" value="Submit" />
@@ -278,7 +322,7 @@
 							    		<div class="row">
 								    		<form role="form" id="img_upload_form" action="<?php echo base_url(); ?>cPatternDesc/upload_img/<?php echo $pat_id; ?>/<?php echo $rows['id']; ?>" method="post" enctype="multipart/form-data">
 								    			<input type="file" name="img_file" size="20" class="pull-left" />
-								    			<input type="submit" class="btn btn-primary pull-left" value="upload" />
+								    			<input type="submit" class="btn btn-primary btn-sm pull-left" value="upload" />
 								    		</form>
 							    		</div>
 							    	</div>
@@ -287,8 +331,8 @@
 									<div class="col-md-1"></div>
 									<div class="col-md-10">
 										<div class="row">
-											<table class="table table-hover">
-												<tr class="info">
+											<table class="table table-striped">
+												<tr style="background-color: <?php echo TBL_GREY; ?>;">
 													<th class="col-md-1 text-center" >ID</th>
 													<th class="col-md-1 text-center">Preview</th>
 													<th class="col-md-4 text-center">File Name</th>

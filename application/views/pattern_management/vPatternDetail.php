@@ -24,7 +24,7 @@
             <!-- left column -->
             <div class="col-md-12">
               	<!-- general form elements -->
-                <div class="box box-primary">
+                <div class="box box-danger">
                     <div class="box-header">
                         <h3 class="box-title">Add/Edit Pattern Details</h3>
                     </div><!-- /.box-header -->
@@ -64,6 +64,7 @@
 	                            </div>
 	                        </div>
 	                        <div class="row">
+	                        	<?php if($userObj['user_role'] == 'Admin') {?>
 	                            <div class="col-md-2">
 	                            	<div class="form-group">
 	                                	<label for="pattern_creator_id">Creator</label>
@@ -75,17 +76,24 @@
 	                                		<?php $this->load->model("mLogin");
 	                                			$user = $this->mLogin->get_user_all();
 	                                			foreach ($user as $usr) {
-	                                				if($rows['pattern_creator_id'] == $usr['id']){
-	                                					echo "<option value='".$usr['id']."' selected>".$usr['id']." - ".$usr['user_name']."</option>";
+	                                				if($usr['user_role'] != 'Assessor'){
+	                                					$select = ($rows['pattern_creator_id'] == $usr['id'])?'selected':'';
+	                                					switch ($usr['user_role']) {
+	                                						case 'Admin':
+	                                							$role = "System Administrator";
+	                                							break;
+	                                						default:
+	                                							$role = "Pattern Developer";
+	                                							break;
+	                                					}
+	                                					echo "<option value='".$usr['id']."' ".$select.">".$usr['id']." - ".$usr['user_name']." (".$role.")</option>";
 	                                				}
-	                                				else{
-	                                					echo "<option value='".$usr['id']."'>".$usr['id']." - ".$usr['user_name']."</option>";
-	                                				}	
 	                                			}
 	                                		?>
 	                                	</select>
 	                                </div>
 	                            </div>
+	                            <?php } ?>
 	                        </div>
 	                        <div class="row">
 	                            <div class="col-md-2">
@@ -141,7 +149,7 @@
 	                            				}
 	                            			}
 	                            			else{
-	                            				echo "<option value='0'>No pattern description provided</option>";
+	                            				echo "<option value='1.0'>1.0</option>";
 	                            			}
 	                            		?>
 	                            		</select>
@@ -157,7 +165,7 @@
 	                            <div class="col-md-4">
 	                            	<div class="form-group">
 	                            		<input type='text' class='form-control' id='pattern_assess_limit' name='pattern_assess_limit' value='<?php echo $rows['pattern_assess_limit']; ?>' placeholder="e.g. 10" required>
-	                            		<small class="text-primary">Enter '<span class="text-danger"><b>0</b></span>' if you want to <span class="text-danger"><b>'Unlimit'</b></span> the number of assessment</small>
+	                            		<small class="text text-muted">Enter '<span class="text-danger"><b>0</b></span>' if you want to <span class="text-danger"><b>'Unlimit'</b></span> the number of assessment</small>
 	                            	</div>
 	                            </div>
 	                        </div>

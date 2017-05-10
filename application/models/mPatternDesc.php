@@ -19,8 +19,13 @@
 			return $this->d->select('*',$condition, 'pattern_description',1)[0];
 		}
 
-		public function get_pattern_description_by_pattern($pat_id){
-			$condition = "pattern_id ='".$pat_id."'";
+		public function get_pattern_description_by_pattern($pat_id, $ver = NULL){
+			if($ver != NULL){
+				$condition = "pattern_id = '".$pat_id."' AND desc_version ='".$ver."'";
+			}
+			else{
+				$condition = "pattern_id ='".$pat_id."'";
+			}
 			return $this->d->select('*', $condition, 'pattern_description');
 		}
 

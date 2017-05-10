@@ -19,8 +19,11 @@
 			else{
 				$data['title'] = 'Pattern Description List';
 				$data['userObj'] = $this->mLogin->get_user(array('email' => $this->session->userdata('email')))[0];
-				$detail['rows'] = (is_bool($this->mPatternDesc->get_pattern_description_by_pattern($pat_id)))? array():$this->mPatternDesc->get_pattern_description_by_pattern($pat_id);
+				$desc = $this->mPatternDesc->get_pattern_description_by_pattern($pat_id);
+				$detail['rows'] = (is_bool($desc))? array():$desc;
 				$detail['pat_id'] = $pat_id;
+				$pattern = $this->mPattern->get_pattern($pat_id);
+				$detail['pattern'] =  (is_bool($pattern))? array(): $pattern;
 
 				$this->load->view('templates/header', $data);
 				$this->load->view('pattern_management/vDescriptionList', $detail);
@@ -74,7 +77,12 @@
 					'desc_consequences' => $this->input->post('desc_consequences'),
 					'desc_sample_code' => $this->input->post('desc_sample_code'),
 					'desc_known_uses' => $this->input->post('desc_known_uses'),
-					'desc_related_pattern' => $this->input->post('desc_related_pattern')
+					'desc_related_pattern' => $this->input->post('desc_related_pattern'),
+					'is_UCD' => ($this->input->post('is_UCD') == 'Y')? true: false,
+					'is_AD' => ($this->input->post('is_AD') == 'Y')? true: false,
+					'is_CD' => ($this->input->post('is_CD') == 'Y')? true: false,
+					'is_SD' => ($this->input->post('is_SD') == 'Y')? true: false,
+					'is_BSM' => ($this->input->post('is_BSM') == 'Y')? true: false
 				);
 				$result = $this->mPatternDesc->create_pattern_description($data);
 
@@ -90,6 +98,7 @@
 		}
 
 		public function edit_desc($id, $pat_id){
+			var_dump($this->input->post('is_UCD'));
 			$data = array(
 				'desc_version' => $this->input->post('desc_version'),
 				'pattern_id' => $pat_id,
@@ -106,7 +115,12 @@
 				'desc_consequences' => $this->input->post('desc_consequences'),
 				'desc_sample_code' => $this->input->post('desc_sample_code'),
 				'desc_known_uses' => $this->input->post('desc_known_uses'),
-				'desc_related_pattern' => $this->input->post('desc_related_pattern')
+				'desc_related_pattern' => $this->input->post('desc_related_pattern'),
+				'is_UCD' => ($this->input->post('is_UCD') == 'Y')? true: false,
+				'is_AD' => ($this->input->post('is_AD') == 'Y')? true: false,
+				'is_CD' => ($this->input->post('is_CD') == 'Y')? true: false,
+				'is_SD' => ($this->input->post('is_SD') == 'Y')? true: false,
+				'is_BSM' => ($this->input->post('is_BSM') == 'Y')? true: false
 			);
 			$result = $this->mPatternDesc->update_pattern_description($data, $pat_id, $id);
 

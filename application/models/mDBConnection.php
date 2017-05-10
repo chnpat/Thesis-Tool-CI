@@ -29,7 +29,7 @@
 				$this->db->where($cond);
 			}
 			$this->db->from($from);
-			if($limit == NULL){
+			if($limit != NULL){
 				$this->db->limit($limit);
 			}
 			$query = $this->db->get();

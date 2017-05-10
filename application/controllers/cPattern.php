@@ -13,7 +13,14 @@
 			else{
 				$data['title'] = 'Pattern List';
 				$data['userObj'] = $this->mLogin->get_user(array('email' => $this->session->userdata('email')))[0];
-				$detail['rows'] = (is_bool($this->mPattern->get_pattern_all()))? array():$this->mPattern->get_pattern_all();
+				if($data['userObj']['user_role'] == 'Admin'){
+					$list = $this->mPattern->get_pattern_all();
+					$detail['rows'] = (is_bool($list))? array():$list;
+				}
+				else{
+					$list = $this->mPattern->get_pattern_by_developer($data['userObj']['id']);
+					$detail['rows'] = (is_bool($list))? array():$list; 
+				}
 				$this->load->view('templates/header', $data);
 				$this->load->view('vPattern', $detail);
 				$this->load->view('templates/footer');	
@@ -39,6 +46,8 @@
 		}
 
 		public function add_pattern(){
+			$usr = $this->mLogin->get_user(array('email' => $this->session->userdata('email')))[0];
+
 			$this->form_validation->set_rules('pattern_id', 'Pattern ID', 'required');
 			$this->form_validation->set_rules('pattern_name', 'Pattern Name', 'required');
 			$this->form_validation->set_rules('pattern_assess_limit', 'Pattern Assess Limit', 'required|greater_than[-1]');
@@ -51,12 +60,21 @@
 				$data = array(
 					'pattern_id' => $this->input->post('pattern_id'),
 					'pattern_name' => $this->input->post('pattern_name'),
-					'pattern_creator_id' => $this->input->post('pattern_creator_id'),
 					'pattern_assess_limit' => $this->input->post('pattern_assess_limit'),
-					'pattern_assess_version' => $this->input->post('pattern_assess_version'),
+					'pattern_assess_version' => (float)$this->input->post('pattern_assess_version'),
 					'pattern_status' => $this->input->post('pattern_status')
 					);
+				if($usr['user_role'] == 'Admin'){
+					$data['pattern_creator_id'] = $this->input->post('pattern_creator_id');
+				}else{
+					$data['pattern_creator_id'] = $usr['id'];
+				}
+				$desc = array(
+					'pattern_id' => $this->input->post('pattern_id'),
+					'desc_version' => (float)$this->input->post('pattern_assess_version')
+				);
 				$result = $this->mPattern->create_pattern($data);
+				$result_desc = $this->mPatternDesc->create_pattern_description($desc);
 				if($result){
 					$this->session->set_flashdata("pattern_msg", "A pattern id: '".$this->input->post('pattern_id')."' has been added successfully!");
 					$this->index();
@@ -70,6 +88,7 @@
 		}
 
 		public function edit_pattern($id){
+			$usr = $this->mLogin->get_user(array('email' => $this->session->userdata('email')))[0];
 			$this->form_validation->set_rules('pattern_id', 'Pattern ID', 'required');
 			$this->form_validation->set_rules('pattern_name', 'Pattern Name', 'required');
 			$this->form_validation->set_rules('pattern_assess_limit', 'Pattern Assess Limit', 'required|greater_than[-1]');
@@ -82,11 +101,16 @@
 				$data = array(
 					'pattern_id' => $this->input->post('pattern_id'),
 					'pattern_name' => $this->input->post('pattern_name'),
-					'pattern_creator_id' => $this->input->post('pattern_creator_id'),
 					'pattern_assess_limit' => $this->input->post('pattern_assess_limit'),
 					'pattern_assess_version' => $this->input->post('pattern_assess_version'),
 					'pattern_status' => $this->input->post('pattern_status')
 					);
+
+				if($usr['user_role'] == 'Admin'){
+					$data['pattern_creator_id'] = $this->input->post('pattern_creator_id');
+				}else{
+					$data['pattern_creator_id'] = $usr['id'];
+				}
 				$result = $this->mPattern->update_pattern($data);
 
 				if($result){
