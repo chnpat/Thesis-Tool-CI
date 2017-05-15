@@ -42,8 +42,20 @@
 				return array_filter($pat_list, function($pat) {
 					$cond = "pattern_id ='".$pat['pattern_id']."' AND desc_version =".(float)$pat['pattern_assess_version'];
 					$counter = $this->d->select('desc_assess_count', $cond, 'pattern_description')[0]['desc_assess_count'];
-
-					return (($pat['pattern_assess_limit'] == 0)? true:($counter < $pat['pattern_assess_limit'])) AND $pat['pattern_status'] == 'Ready';
+					return (($pat['pattern_assess_limit'] == 0)? true:($counter < $pat['pattern_assess_limit'])) AND $pat['pattern_status'] != 'Disable';
+			});
+			}
+			else{
+				return $pat_list;
+			}
+		}
+		public function get_pattern_reach_limit_assess(){
+			$pat_list = $this->get_pattern_all();
+			if(!is_bool($pat_list)){
+				return array_filter($pat_list, function($pat) {
+					$cond = "pattern_id ='".$pat['pattern_id']."' AND desc_version =".(float)$pat['pattern_assess_version'];
+					$counter = $this->d->select('desc_assess_count', $cond, 'pattern_description')[0]['desc_assess_count'];
+					return (($pat['pattern_assess_limit'] == 0)? false:($counter >= $pat['pattern_assess_limit'])) AND $pat['pattern_status'] != 'Disable';
 			});
 			}
 			else{

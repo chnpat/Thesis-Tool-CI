@@ -24,9 +24,9 @@
 	    	<div class="box-body table-responsive no-padding">
 		    	<div class="panel panel-default panel-noborder">
 					<div class="panel-body">
-				    	<div class="col-md-4"></div>
-				    	<div class="col-md-4"></div>
-				    	<div class="col-md-4 text-right no-padding">
+				    	<div class="col-md-4 hidden-sm hidden-xs"></div>
+				    	<div class="col-md-4 col-sm-6"></div>
+				    	<div class="col-md-4 col-sm-6 text-right no-padding">
 				    		<a href="<?php echo base_url(); ?>cPattern/pattern_detail" class="btn btn-success btn-sm">
 				    			<i class="fa fa-plus"> Add a pattern</i>
 				    		</a>
@@ -34,13 +34,13 @@
 					</div>
 					<legend></legend>
 					<div class="panel-body">
-						<table class="table table-striped">
+						<table class="table table-bordered table-striped">
 			    			<tr style="background-color: #abb0ba;">
 			    				<th class="col-md-1 text-center">Pattern ID</th>
 			    				<th class="col-md-3 text-center">Name</th>
-			    				<th class="col-md-2 text-center">Creator Name</th>
+			    				<th class="col-md-2 hidden-sm hidden-xs text-center">Creator Name</th>
 			    				<th class="col-md-1 text-center">Assess on Version</th>
-			    				<th class="col-md-2 text-center">Status</th>
+			    				<th class="col-md-2 hidden-sm hidden-xs text-center">Status</th>
 			    				<th class="col-md-3 text-center"></th>
 			    			</tr>
 			    			<?php 
@@ -50,22 +50,22 @@
 				    				echo "<tr>";
 				    				echo "<td class='text-center'>".$row['pattern_id']."</td>";
 				    				echo "<td>".$row['pattern_name']."</td>";
-				    				echo "<td class='text-center'>".$this->mLogin->get_user_by_id($row['pattern_creator_id'])[0]['user_name']."</td>";
+				    				echo "<td class='col-md-2 hidden-sm hidden-xs text-center'>".$this->mLogin->get_user_by_id($row['pattern_creator_id'])[0]['user_name']."</td>";
 				    				echo "<td class='text-center'>".$row['pattern_assess_version']."</td>";
 				    				switch ($row['pattern_status']) {
 				    					case 'Ready':
-				    						echo "<td class='text-center'><div class='label label-success lable-sm text-center'>"."Ready to be Assessed"."</div></td>";
+				    						echo "<td class='col-md-2 hidden-sm hidden-xs text-center'><div class='label label-success lable-sm text-center'>"."Ready to be Assessed"."</div></td>";
 				    						break;
 				    					case 'Assessed':
-				    						echo "<td class='text-center'><div class='label label-warning lable-sm text-center'>"."Pattern Assessed"."</div></td>";
+				    						echo "<td class='col-md-2 hidden-sm hidden-xs text-center'><div class='label label-warning lable-sm text-center'>"."Pattern Assessed"."</div></td>";
 				    						break;
 				    					default:
-				    						echo "<td class='text-center'><div class='label label-danger lable-sm text-center'>"."Assessment Disabled"."</div></td>";
+				    						echo "<td class='col-md-2 hidden-sm hidden-xs text-center'><div class='label label-danger lable-sm text-center'>"."Assessment Disabled"."</div></td>";
 				    						break;
 				    				}
 				    				echo "<td>"
 				    		?>
-				    			<a href="<?php echo base_url(); ?>cPatternDesc/index/<?php echo $row['pattern_id']; ?>" class="btn btn-primary btn-xs">
+				    			<a href="<?php echo base_url(); ?>cPatternDesc/index/<?php echo $row['pattern_id']; ?>" class="btn bg-purple btn-xs">
 				    				<i class="fa fa-newspaper-o"></i> Description
 				    			</a>
 				    			<a href="<?php echo base_url(); ?>cPattern/pattern_detail/<?php echo $row['pattern_id']; ?>" class="btn btn-warning btn-xs">

@@ -42,6 +42,11 @@
 			return $this->d->update($condition, "pattern_description", $data);
 		}
 
+		public function update_assess_count($pat_id, $ver, $data){
+			$condition = "pattern_id = '".$pat_id."' AND desc_version = ".$ver;
+			return $this->d->update($condition, "pattern_description", $data);
+		}
+
 		public function delete_pattern_description($id){
 			$condition = "id = ".$id;
 			return $this->d->delete('*', $condition, 'pattern_description', array('id' => $id));

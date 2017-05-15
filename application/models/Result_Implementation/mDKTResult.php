@@ -11,8 +11,26 @@
 			$this->load->model('mDBConnection', 'd');
 		}
 
-		public function create_result($data){
-
+		public function create_result($pat_id, $ver, $ass_id, $data){
+			$result = array(
+				'pattern_id' => $pat_id,
+				'desc_version' => $ver,
+				'metric_id' => 1,
+				'score' => $this->calculate_result($data),
+				'assessor_id' => $ass_id
+				);
+			$cond = "pattern_id = '".$pat_id."' AND desc_version = ".(float)$ver." AND metric_id = 1 AND assessor_id = ".$ass_id;
+			$this->d->create('*', $cond, 'assess_result',$result);
+			$result_id = $this->d->select('result_id', $cond, 'assess_result', 1)[0]['result_id'];
+			foreach ($data as $key => $value) {
+				$var_cond = "result_id = ".$result_id." AND variable_id = ".$key;
+				$var = array(
+					'result_id' => $result_id,
+					'variable_id' => $key,
+					'variable_score' => $value
+					);
+				$this->d->create('*', $var_cond, 'assess_result_detail', $var);
+			}
 		}
 
 		public function get_metric(){
@@ -30,21 +48,6 @@
 			return (is_bool($result))? NULL: $result[0];
 		}
 
-		// public function get_result_w_detail($pat_id, $ver, $ass_id){
-		// 	$condition = "pattern_id = '".$pat_id."' AND desc_version = ".$ver." AND assessor_id = ".$ass_id." AND metric_id = 1";
-		// 	$result = $this->d->select('*', $condition, 'assess_result', 1);
-		// 	if(is_bool($result)){
-		// 		return NULL;
-		// 	}
-		// 	$detail_cond = "result_id = ".$result[0]['result_id'];
-		// 	$result_detail = $this->d->select('*', $detail_cond, 'assess_result_detail');
-		// 	$final = array(
-		// 		'result' => $result[0],
-		// 		'result_detail' => (is_bool($result_detail))? NULL:$result_detail
-		// 		);
-		// 	return $final;
-		// }
-
 		public function get_result_detail($result_id){
 			$condition = "$result_id = ".$result_id;
 			$result = $this->d->select('variable_id, variable_score', $condition, 'assess_result_detail');
@@ -52,11 +55,34 @@
 		}
 
 		public function update_result($pat_id, $ver, $ass_id, $data){
-
+			$result = array(
+				'pattern_id' => $pat_id,
+				'desc_version' => $ver,
+				'metric_id' => 1,
+				'score' => $this->calculate_result($data),
+				'assessor_id' => $ass_id
+				);
+			$cond = "pattern_id = '".$pat_id."' AND desc_version = ".(float)$ver." AND metric_id = 1 AND assessor_id = ".$ass_id;
+			$this->d->update($cond, 'assess_result',$result);
+			$result_id = $this->d->select('result_id', $cond, 'assess_result', 1)[0]['result_id'];
+			foreach ($data as $key => $value) {
+				$var_cond = "result_id = ".$result_id." AND variable_id = ".$key;
+				$var = array(
+					'result_id' => $result_id,
+					'variable_id' => $key,
+					'variable_score' => $value
+					);
+				$this->d->update($var_cond, 'assess_result_detail', $var);
+			}
 		}
 
-		public function delete_result($result_id){
-
+		function calculate_result($data){
+			$sum = 0;
+			foreach ($data as $key => $value) {
+				$sum = $sum + $value;
+			}
+			$Ca = 33;
+			return ($sum/$Ca)*100;
 		}
 	}
 ?>

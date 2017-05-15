@@ -8,12 +8,48 @@
 		
 		public function __construct(){
 			parent::__construct();
-			$this->load->model(array('mDBConnection'));
+			$this->load->model('mDBConnection','d');
+			$this->load->model(array('mPattern', 'mPatternDesc'));
 			$this->load->library(array('TextStatistics/Syllables', 'TextStatistics/Text', 'TextStatistics/TextStatistics'));
 		}
 
-		public function create_result($data){
-			$this->calculate_result($data["pattern"], $data["description"], $data["ass_id"]);
+		public function create_result($pat_id, $ver, $ass_id, $data){
+			$result = $this->calculate_result($data["pattern"], $data["description"], $ass_id);
+			$database_obj_overall = array(
+				'pattern_id' => $pat_id,
+				'desc_version' => $ver,
+				'metric_id' => 4,
+				'score' => $result['Overall'],
+				'assessor_id' => $ass_id
+				);
+			$condition = "pattern_id ='".$pat_id."' AND desc_version = ".(float)$ver." AND metric_id = 4 AND assessor_id = ".$ass_id;
+			$this->d->create('*', $condition, 'assess_result', $database_obj_overall);
+			
+			// Create Detail
+			$result_id = $this->d->select('result_id', $condition, "assess_result",1)[0];
+			foreach ($result['Each'] as $key => $value) {
+				foreach (array(86,87,88,89) as $var_id) {
+					$database_obj_each = array(
+						'result_id' => $result_id['result_id'],
+						'variable_id' => $var_id,
+						'remark' => $key);
+					switch ($var_id) {
+						case 86:
+							$database_obj_each['variable_score'] = $value['n_word'];
+							break;
+						case 87:
+							$database_obj_each['variable_score'] = $value['n_sentence'];
+							break;
+						case 88:
+							$database_obj_each['variable_score'] = $value['n_syllable'];
+							break;
+						default:
+							$database_obj_each['variable_score'] = $value['score'];
+							break;
+					}
+					$this->d->create('*', 'result_id = '.$result_id['result_id'].' AND variable_id = '.$var_id.' AND remark = "'.$key.'"', 'assess_result_detail', $database_obj_each);
+				}
+			}
 		}
 
 		public function get_metric(){
@@ -30,21 +66,6 @@
 			$result = $this->d->select('result_id, score', $condition, 'assess_result', 1);
 			return (is_bool($result))? NULL: $result[0];
 		}
-
-		// public function get_result_w_detail($pat_id, $ver, $ass_id){
-		// 	$condition = "pattern_id = '".$pat_id."' AND desc_version = ".$ver." AND assessor_id = ".$ass_id." AND metric_id = 4";
-		// 	$result = $this->d->select('*', $condition, 'assess_result', 1);
-		// 	if(is_bool($result)){
-		// 		return NULL;
-		// 	}
-		// 	$detail_cond = "result_id = ".$result[0]['result_id'];
-		// 	$result_detail = $this->d->select('*', $detail_cond, 'assess_result_detail');
-		// 	$final = array(
-		// 		'result' => $result[0],
-		// 		'result_detail' => (is_bool($result_detail))? NULL:$result_detail
-		// 		);
-		// 	return $final;
-		// }
 
 		public function get_result_detail($result_id){
 			$condition = "$result_id = ".$result_id;
@@ -98,32 +119,72 @@
 			}
 			$res = 0;
 			$counter = 0;
-			foreach ($desc_notags as $d) {
+			$result = array();
+			foreach ($desc_notags as $k => $d) {
 				if(str_word_count($d) > 100){
 					$n_word = str_word_count($d);
 					$n_syllable = Syllables::totalSyllables($d);
 					$n_sentence = Text::sentenceCount($d);
 					$top_CRE = 206.835 -  (1.015 * (Text::wordCount($d)/Text::sentenceCount($d))) - (86.4 * (Syllables::totalSyllables($d)/Text::wordCount($d)));
-					echo $top_CRE."<br/>";
+					$result['Each'][$k]['score'] = $top_CRE;
+					$result['Each'][$k]['n_word'] = $n_word;
+					$result['Each'][$k]['n_sentence'] = $n_sentence;
+					$result['Each'][$k]['n_syllable'] = $n_syllable;
 					$res = $res + $top_CRE;
 					$counter ++;
-					//$n_syllable = $this->Syllables->totalSyllables($d);
-					// echo "1-".$n_syllable;
 				}
 			}
-			echo "Average=".($res/$counter);
+			if($counter > 0){
+				$result['Overall'] = ($res/$counter);
+			}else{
+				$result['Each'] = array();
+				$result['Overall'] = 0;
+			}
+
+			return $result;
 		}
 
 		public function update_result($pat_id, $ver, $ass_id, $data){
-
-		}
-
-		public function delete_result($result_id){
-
-		}
-
-		public function count_syllable($str){
-
+			$pat = $this->mPattern->get_pattern($pat_id);
+			$desc = (!is_bool($pat))?$this->mPatternDesc->get_pattern_description_by_pattern($pat_id, (float)$pat['pattern_assess_version'])[0]: array();
+			
+			$result = $this->calculate_result($pat, $desc, $ass_id);
+			$database_obj_overall = array(
+				'pattern_id' => $pat_id,
+				'desc_version' => $ver,
+				'metric_id' => 4,
+				'score' => $result['Overall'],
+				'assessor_id' => $ass_id
+				);
+			$condition = "pattern_id ='".$pat_id."' AND desc_version = ".(float)$ver." AND metric_id = 4 AND assessor_id = ".$ass_id;
+			$this->d->update($condition, 'assess_result', $database_obj_overall);
+			
+			// Update Detail
+			$result_id = $this->d->select('result_id', $condition, "assess_result",1)[0];
+			foreach ($result['Each'] as $key => $value) {
+				foreach (array(86,87,88,89) as $var_id) {
+					$database_obj_each = array(
+						'result_id' => $result_id['result_id'],
+						'variable_id' => $var_id,
+						'remark' => $key);
+					switch ($var_id) {
+						case 86:
+							$database_obj_each['variable_score'] = $value['n_word'];
+							break;
+						case 87:
+							$database_obj_each['variable_score'] = $value['n_sentence'];
+							break;
+						case 88:
+							$database_obj_each['variable_score'] = $value['n_syllable'];
+							break;
+						default:
+							$database_obj_each['variable_score'] = $value['score'];
+							break;
+					}
+					$update_cond = "result_id = ".$result_id['result_id']." AND variable_id = ".$var_id." AND remark = '".$key."'";
+					$this->d->update($update_cond, 'assess_result_detail', $database_obj_each);
+				}
+			}
 		}
 	}
 ?>

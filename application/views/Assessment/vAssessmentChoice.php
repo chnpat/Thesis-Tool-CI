@@ -6,6 +6,20 @@
       </h1>
     </section>
     <section class="content">
+    	<div class="col-12">
+			<?php if($this->session->flashdata("choice_msg")){ ?>
+		    	<div class="alert alert-dismissible alert-success">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					<strong>Saved!</strong> <?php echo $this->session->flashdata("choice_msg"); ?>
+				</div>
+		    <?php } ?>
+		    <?php if($this->session->flashdata("choice_error")){ ?>
+		    	<div class="alert alert-dismissible alert-danger">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					<strong>Error!</strong> <?php echo $this->session->flashdata("choice_error"); ?>
+				</div>
+		    <?php } ?>
+		</div>
     	<div class="box box-danger">
 	    	<div class="box-body table-responsive no-padding">
 	    		<div class="panel panel-default panel-noborder">
@@ -14,31 +28,31 @@
 					</div>
 					<legend></legend>
 					<div class="panel-body">
-						<table class="table table-striped">
+						<table class="table table-bordered table-striped">
 							<thead>
 								<tr style="background-color: #abb0ba;">
-									<th class="col-md-2 text-center">Quality Attribute</th>
-									<th class="col-md-1 text-center">Quality-Carrying Property</th>
-									<th class="col-md-3 text-center">Metric Name</th>
-									<th class="col-md-2 text-center">Status</th>
-									<th class="col-md-2 text-center">Score</th> 
-									<th class="col-md-2 text-center"></th>
+									<th class="col-md-2 hidden-sm hidden-xs text-center">Quality Attribute</th>
+									<th class="col-md-1 hidden-sm hidden-xs text-center">Quality-Carrying Property</th>
+									<th class="col-md-3 col-sm-4 col-xs-4 text-center">Metric Name</th>
+									<th class="col-md-2 col-sm-2 col-xs-2 text-center">Status</th>
+									<th class="col-md-2 col-sm-4 col-xs-4 text-center">Score</th> 
+									<th class="col-md-2 col-sm-2 col-xs-2 text-center"></th>
 								</tr>
 							</thead>
 							<tbody>
-								<?php foreach (array('DKT', 'CSD', 'PAP', 'CRE') as $metr) { ?>
+							<?php foreach (array('DKT', 'CSD', 'PAP', 'CRE') as $metr) { ?>
 								<tr>
-									<td><?= $metrics[$metr]['metric_QA'];?></td>
-									<td class="text-center"><?= $metrics[$metr]['metric_QCP'];?></td>
-									<td><?= $metrics[$metr]['metric_name'];?> (<?= $metrics[$metr]['metric_abberv']?>)</td>
-									<td class="text-center">
+									<td class="col-md-2 hidden-sm hidden-xs"><?= $metrics[$metr]['metric_QA'];?></td>
+									<td class="col-md-1 hidden-sm hidden-xs text-center"><?= $metrics[$metr]['metric_QCP'];?></td>
+									<td class="col-md-3 col-sm-4 col-xs-4"><?= $metrics[$metr]['metric_name'];?> (<?= $metrics[$metr]['metric_abberv']?>)</td>
+									<td class="col-md-2 col-sm-2 col-xs-2 text-center">
 										<?php 
 										echo ($result[$metr] == NULL)? "<div class='label label-danger'>Unassessed</div>": "<div class='label label-success'>Assessed</div>";
 										?>
 									</td>
-									<td class="text-center">
+									<td class="col-md-2 col-sm-4 col-xs-4 text-center">
 										<?php if($result[$metr] != NULL) {  ?> 
-										<div class="progress progress-striped active">
+										<div class="hidden-sm hidden-xs progress progress-striped active">
 											<?php 
 												$score = $result[$metr]['score']; 
 												$color = "progress-bar progress-bar-";
@@ -69,14 +83,43 @@
 
 											?>
 										</div>
+										<div class="hidden-md hidden-lg">
+											<?php
+											$color = "badge bg-";
+											if($metr == "CRE"){
+												if($score < 30){
+													$color = $color."red";
+												}
+												else if($score <= 60){
+													$color = $color."green";
+												}
+												else {
+													$color = $color."yellow";
+												}
+											}
+											else{
+												if($score >= 90){
+													$color = $color."green";
+												} else if ($score >= 50){
+													$color = $color."yellow";
+												} else {
+													$color = $color."green";
+												}
+											}
+
+											echo "<span class='".$color."'>".$score."%</span>";
+											?>
+										</div>
 										<?php } else { echo "-"; }?>
 									</td>
 									<td>
-										<?php if($result[$metr] != NULL) { ?>
-											<a href="<?php echo base_url(); ?>/cAssess/assess_detail/<?php echo $pattern['pattern_id']; ?>/<?php echo $pattern['pattern_assess_version']; ?>/<?php echo $metr; ?>" class="btn btn-primary btn-xs"><i class="fa fa-book"></i> Detail</a>
-										<?php } else { ?>
-											<a href="<?php echo base_url(); ?>/cAssess/assess_detail/<?php echo $pattern['pattern_id']; ?>/<?php echo $pattern['pattern_assess_version']; ?>/<?php echo $metr; ?>" class="btn btn-warning btn-xs"><i class="fa fa-check-square-o"></i> Assess</a>
-										<?php } ?>
+										<div>
+											<?php if($result[$metr] != NULL) { ?>
+												<a href="<?php echo base_url(); ?>/cAssess/update_detail/<?php echo $pattern['pattern_id']; ?>/<?php echo $pattern['pattern_assess_version']; ?>/<?php echo $metr; ?>" class="btn bg-purple btn-xs"><i class="fa fa-book"></i> Detail</a>
+											<?php } else { ?>
+												<a href="<?php echo base_url(); ?>/cAssess/assess_detail/<?php echo $pattern['pattern_id']; ?>/<?php echo $pattern['pattern_assess_version']; ?>/<?php echo $metr; ?>" class="btn bg-orange btn-xs"><i class="fa fa-check-square-o"></i> Assess</a>
+											<?php } ?>
+										</div>
 									</td>
 								</tr>
 								<?php } ?>

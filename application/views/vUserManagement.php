@@ -22,58 +22,56 @@
 		</div>
 	    <div class="box box-danger">
 	    	<div class="box-body table-responsive">
-		    	<div class="panel panel-default panel-noborder">
-					<div class="panel-body">
-				    	<div class="col-md-8"></div>
-				    	<div class="col-md-4 text-right no-padding">
-			    			<a href="<?php echo base_url(); ?>cUserManagement/user_detail" class="btn btn-success btn-sm">
-			    				<i class="fa fa-plus"> Add a user</i>
-			    			</a>
-				    	</div>
-					</div>
+	    		<div class="box-header with-border">
+			    	<div class="col-md-8"></div>
+			    	<div class="col-md-4 text-right no-padding">
+		    			<a href="<?php echo base_url(); ?>cUserManagement/user_detail" class="btn btn-success btn-sm">
+		    				<i class="fa fa-plus"> Add a user</i>
+		    			</a>
+			    	</div>
 				</div>
 				<div class="panel-body">
-		    		<table class="table table-striped">
+		    		<table class="table table-bordered table-striped">
 		    			<tr style="background-color: #abb0ba;">
-		    				<th class="col-md-1">No.</th>
-		    				<th class="col-md-3">Username</th>
-		    				<th class="col-md-3">Email Address</th>
-		    				<th class="col-md-2">Role</th>
-		    				<th class="col-md-1">Status</th>
-		    				<th class="col-md-2"></th>
+		    				<th class="col-md-1 col-sm-2 col-xs-2">No.</th>
+		    				<th class="col-md-3 col-sm-2 col-xs-2">Username</th>
+		    				<th class="col-md-3 col-sm-4 col-xs-6">Email Address</th>
+		    				<th class="col-md-2 col-sm-2 hidden-xs">Role</th>
+		    				<th class="col-md-1 hidden-sm hidden-xs">Status</th>
+		    				<th class="col-md-2 col-sm-2 col-xs-2"></th>
 		    			</tr>
 		    			<?php 
 		    			if(!empty($rows)){
 			    			foreach($rows as $row){ 
 			    				echo "<tr>";
-			    				echo "<td>".$row['id']."</td>";
-			    				echo "<td>".$row['user_name']."</td>";
-			    				echo "<td>".$row['user_email']."</td>";
+			    				echo "<td class='col-md-1 col-sm-2 col-xs-2'>".$row['id']."</td>";
+			    				echo "<td class='col-md-3 col-sm-2 col-xs-2'>".$row['user_name']."</td>";
+			    				echo "<td class='col-md-3 col-sm-4 col-xs-6'>".$row['user_email']."</td>";
 			    				
 			    				if($row['user_role'] == 'Admin'){
-			    					echo "<td><span class='label label-info'>System Administrator</span></td>";
+			    					echo "<td class='col-md-2 col-sm-2 hidden-xs'><span class='label label-info'>System Administrator</span></td>";
 			    				}
 			    				else if($row['user_role'] == 'Assessor'){
-			    					echo "<td><span class='label label-warning'>Pattern Assessor</span></td>";
+			    					echo "<td class='col-md-2 col-sm-2 hidden-xs'><span class='label label-warning'>Pattern Assessor</span></td>";
 			    				}
 			    				else{
-			    					echo "<td><span class='label label-primary'>Pattern Developer</span></td>";
+			    					echo "<td class='col-md-2 col-sm-2 hidden-xs'><span class='label label-primary'>Pattern Developer</span></td>";
 			    				}
 
 			    				if($row['user_status']){
-			    					echo "<td><span class='label label-success'>Active</span></td>";
+			    					echo "<td class='col-md-1 hidden-sm hidden-xs'><span class='label label-success'>Active</span></td>";
 			    				}
 			    				else{
-			    					echo "<td><span class='label label-danger'>Disable</span></td>";	
+			    					echo "<td class='col-md-1 hidden-sm hidden-xs'><span class='label label-danger'>Disable</span></td>";	
 			    				}
-			    				echo "<td>";
+			    				echo "<td class='col-md-2 col-sm-2 col-xs-2'>";
 			    		?>
-			    			<a href="<?php echo base_url(); ?>cUserManagement/user_detail/<?php echo $row['id']; ?>" class="btn btn-warning btn-xs">
+			    			<a href="<?php echo base_url(); ?>cUserManagement/user_detail/<?php echo $row['id']; ?>" class="btn bg-orange btn-xs">
 			    				<i class="fa fa-edit"></i> Edit
 			    			</a>
 			    			<a href="javascript:void(0);" onclick="deleteThis(<?php echo $row['id']; ?>);" class="btn btn-danger btn-xs">
 			    				<i class="fa fa-trash"></i> Delete
-			    				</a>
+		    				</a>
 			    		<?php
 			    				echo "</td></tr>";
 			    			} 

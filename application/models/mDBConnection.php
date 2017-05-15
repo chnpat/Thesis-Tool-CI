@@ -41,6 +41,22 @@
 			}
 		}
 
+		public function select_grouped($select, $cond, $from, $groupby){
+			$this->db->select($select);
+			if($cond != ""){
+				$this->db->where($cond);
+			}
+			$this->db->from($from);
+			$this->db->group_by($groupby);
+			$query = $this->db->get();
+			if($query->num_rows() > 0){
+				return $query->result_array();
+			}
+			else{
+				return false;
+			}
+		}
+
 		public function update($cond, $from, $data){
 			if($cond != ""){
 				$this->db->where($cond);
