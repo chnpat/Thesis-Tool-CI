@@ -12,3 +12,7 @@
 .info .table_header{
 	background-color: #abb0ba;
 }
+
+.pre-scrollable{
+	overflow-y: auto;
+}

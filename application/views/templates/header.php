@@ -41,7 +41,7 @@
     	<script type="text/javascript" src="<?php echo base_url(); ?>assets/plugins/ckeditor/ckeditor.js"></script>
     	<!-- <script type="text/javascript" src="<?php echo base_url(); ?>assets/plugins/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js"></script> -->
     </head>
-    <body class="skin-red sidebar-mini">
+    <body class="skin-red fixed sidebar-mini">
     	<div class="wrapper">
     		<header class="main-header">
     			<!-- logo -->

@@ -29,13 +29,14 @@
                         <h3 class="box-title">Add/Edit Pattern Description Details</h3>
                     </div><!-- /.box-header -->
                     <ul class="nav nav-tabs">
-                    	<li class="<?php echo ($tabs == NULL)?'active':''; ?>"><a href="#desc_form" data-toggle="tab" aria-expanded="false" class="text text-danger">Description Form</a></li>
+                    	<li class="<?php echo ($tabs == 1)?'active':''; ?>"><a href="#desc_form" data-toggle="tab" aria-expanded="false" class="text text-danger">Description Form</a></li>
                     	<?php if(!empty($rows)) { ?>
-                    	<li class="<?php echo ($tabs == true)? 'active': ''; ?>"><a href="#desc_img" data-toggle="tab" aria-expanded="false" class="text text-danger">Image Upload</a></li>
+                    	<li class="<?php echo ($tabs == 2)? 'active': ''; ?>"><a href="#desc_design_img" data-toggle="tab" aria-expanded="false" class="text text-danger">Example Design Image Upload</a></li>
+                    	<li class="<?php echo ($tabs == 3)? 'active': ''; ?>"><a href="#desc_img" data-toggle="tab" aria-expanded="false" class="text text-danger">Image Upload</a></li>
                     	<?php } ?>
                     </ul>
                     <div id="myTabContent" class="tab-content">
-                    	<div class="tab-pane fade <?php echo ($tabs == NULL)?'active in':''; ?>" id="desc_form">
+                    	<div class="tab-pane fade <?php echo ($tabs == 1)?'active in':''; ?>" id="desc_form">
 		                    <form role="form" id="addPatternDesc" action="
 			                    <?php if(empty($rows)) { 
 			                    		echo base_url(); ?>cPatternDesc/add_desc/<?=$pat_id; ?>
@@ -301,7 +302,113 @@
 		                        </div> 
 			                </form>
 			            </div>
-			            <div class="tab-pane fade <?php echo ($tabs == true)? 'active in': ''; ?>" id="desc_img">
+			            <div class="tab-pane fade <?php echo ($tabs == 2)? 'active in': ''; ?>" id="desc_design_img">
+			            	<div class="panel panel-default panel-noborder">
+								<div class="panel-body">
+							    	<div class="col-md-8">
+						    			<?php if($this->session->flashdata('design_upload_msg')) { ?>
+						    				<div class="alert alert-dismissible alert-success">
+												<button type="button" class="close" data-dismiss="alert">&times;</button>
+												<strong>Saved!</strong> <?php echo $this->session->flashdata("design_upload_msg"); ?>
+											</div>
+						    			<?php } ?>
+						    			<?php if($this->session->flashdata('design_upload_error')) { ?>
+						    				<div class="alert alert-dismissible alert-danger">
+												<button type="button" class="close" data-dismiss="alert">&times;</button>
+												<strong>Error!</strong> <?php echo $this->session->flashdata("design_upload_error"); ?>
+											</div>
+										<?php } ?>
+							    	</div>
+							    	<div class="col-md-4 text-right no-padding">
+							    		<div class="row">
+								    		<form role="form" id="design_upload_form" action="<?php echo base_url(); ?>cPatternDesc/upload_design/<?php echo $pat_id; ?>/<?php echo $rows['id']; ?>" method="post" enctype="multipart/form-data">
+								    			<div class="input-group">
+									    			<input type="file" name="design_file" size="20" class="pull-left" />
+									    			<span class="input-group-btn">
+									    				<input type="submit" class="btn btn-primary btn-sm pull-left" value="upload" />
+									    			</span>
+								    			</div>
+								    		</form>
+							    		</div>
+							    	</div>
+								</div>
+								<div class="panel-body">
+									<div class="col-md-1"></div>
+									<div class="col-md-10">
+										<div class="row">
+											<table class="table table-striped">
+												<tr style="background-color: <?php echo TBL_GREY; ?>;">
+													<th class="col-md-1 text-center">ID</th>
+													<th class="col-md-1 text-center">Preview</th>
+													<th class="col-md-4 text-center">File Name</th>
+													<th class="col-md-6 text-center">File Path</th>
+													<th></th>
+												</tr>
+												<?php if(!empty($design_file_list)) { 
+													$count = 1;
+													foreach ($design_file_list as $file) { 
+												?>
+													<tr>
+														<td class="text-center">
+															<?php echo $count; ?>
+														</td>
+														<td>
+															<?php echo "<img src='".base_url()."images/DesignImg/".$pat_id."/".$rows['id']."/".$file['name']."' class='img-thumbnail'>";?>
+														</td>
+														<td class="text-center">
+															<?php echo $file['name']; ?>
+														</td>
+														<td>
+															<div class="form-group">
+																<div class="input-group">
+																	<input type="text" name="design_path_<?php echo $count;?>" class="form-control" id="design_path_<?php echo $count;?>" value="<?php echo base_url()."images/DesignImg/".$pat_id."/".$rows['id']."/".$file['name']; ?>">
+																	<span class="input-group-btn">
+																		<button class="btn btn-default" onclick="des_copier(<?php echo $count; ?>)"><i class="fa fa-copy"></i></button>
+																	</span>
+																</div>
+															</div>
+														</td>
+														<td>
+															<a href="javascript:void(0);" onclick="des_deleteImg('<?php echo $pat_id;?>','<?php echo $rows['id']; ?>','<?php echo $file['name']; ?>');" >
+											    				<p class="text-danger"><b>&times;</b></p>
+											    			</a>
+														</td>
+													</tr>
+												<?php
+													$count++; 
+													} 
+												} else { ?>
+													<tr>
+														<td class="active"></td>
+														<td class="active"></td>
+														<td class="active text-right">No Images in the directory</td>
+														<td class="active"></td>
+														<td class="active"></td>
+													</tr>
+												<?php } ?>
+											</table>
+											<script type="text/javascript">
+												var url="<?php echo base_url();?>";
+											    function des_deleteImg(pat_id, id, name){
+											       	var r=confirm("Do you really want to delete image ("+name+")?");
+											        if (r==true) {
+											          	window.location = url+"cPatternDesc/delete_design/"+pat_id+"/"+id+"/"+name;
+											        } else {
+											          return false;
+											        }
+											    }
+												function des_copier(id){
+										            document.getElementById('design_path_'+id).select();
+										            document.execCommand('copy');
+										        }
+											</script>
+										</div>
+									</div>
+									<div class="col-md-1"></div>
+								</div>
+							</div>
+			            </div>
+			            <div class="tab-pane fade <?php echo ($tabs == 3)? 'active in': ''; ?>" id="desc_img">
 			            	<div class="panel panel-default panel-noborder">
 								<div class="panel-body">
 							    	<div class="col-md-8">
@@ -333,7 +440,7 @@
 										<div class="row">
 											<table class="table table-striped">
 												<tr style="background-color: <?php echo TBL_GREY; ?>;">
-													<th class="col-md-1 text-center" >ID</th>
+													<th class="col-md-1 text-center">ID</th>
 													<th class="col-md-1 text-center">Preview</th>
 													<th class="col-md-4 text-center">File Name</th>
 													<th class="col-md-6 text-center">File Path</th>
@@ -372,7 +479,15 @@
 												<?php
 													$count++; 
 													} 
-												} ?>
+												} else { ?>
+													<tr>
+														<td class="active"></td>
+														<td class="active"></td>
+														<td class="active text-right">No Images in the directory</td>
+														<td class="active"></td>
+														<td class="active"></td>
+													</tr>
+												<?php } ?>
 											</table>
 											<script type="text/javascript">
 												var url="<?php echo base_url();?>";

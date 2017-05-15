@@ -10,6 +10,7 @@
 				'Result_implementation/mCREResult',
 				'Result_implementation/mCSDResult',
 				'Result_implementation/mDKTResult'));
+			$this->load->helper('file');
 		}
 
 		public function index(){
@@ -86,11 +87,13 @@
 				}
 				else{
 					$desc = (!is_bool($pat))?$this->mPatternDesc->get_pattern_description_by_pattern($pat_id, (float)$pat['pattern_assess_version'])[0]: array();
+					$design_img_list = get_dir_file_info("./images/DesignImg/".$pat['pattern_id']."/".$desc['id']."/");
 
 					$detail = array(
 						'pattern' => $pat,
 						'description' => $desc,
 						'metr' => $metr,
+						'design_file' => $design_img_list
 						);
 					$detail['result'] = $this->get_metrics_w_results($pat['pattern_id'], $pat['pattern_assess_version'], $data['userObj']['id'], $this->get_metrics($metr));
 					$this->load->view('templates/header', $data);

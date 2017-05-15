@@ -42,11 +42,12 @@
 				$detail['pat_id'] = $pat_id;
 				if($id != NULL){
 					$detail['file_list'] = get_dir_file_info("./images/PatternImg/".$detail['pat_id']."/".$id."/");
+					$detail['design_file_list'] = get_dir_file_info("./images/DesignImg/".$detail['pat_id']."/".$id."/");
 				}
 				if(is_bool($detail['rows'])){
 					$detail['rows'] = NULL;
 				}
-				$detail['tabs'] = ($tab == NULL)? NULL:$tab;
+				$detail['tabs'] = ($tab == NULL)? 1:$tab;
 
 				$this->load->view('templates/header', $data);
 				$this->load->view('pattern_management/vDescriptionDetail', $detail);
@@ -137,12 +138,45 @@
 		public function delete_desc($pat_id, $id){
 			if($this->mPatternDesc->delete_pattern_description($id)){
 				$this->session->set_flashdata('desc_msg', 'Pattern description ( id:'.$id.') has been deleted successfully!');
+				$path = "./images/PatternImg/$pat_id/$id";
+				if(is_dir($path)){ 
+					$this->delete_dir($path); 
+				}
 				$this->index($pat_id);
 			}
 			else{
 				$this->session->set_flashdata('desc_error', 'Pattern desciption ( id:'.$id.') cannot be deleted!');
 				$this->index($pat_id);
 			}
+		}
+
+		public function upload_design($pat_id, $id){
+			$path = "./images/DesignImg/$pat_id/$id/";
+			if(!is_dir($path)){
+				mkdir($path, 0777, true);
+			}
+			$config['upload_path'] = $path;
+			$config['allowed_types'] = 'gif|jpg|png';
+			$config['max_size']     = '5000';
+			$config['file_name'] = "Design_".$pat_id."_".$id."_".(count(get_dir_file_info($path))+1);
+
+			$this->load->library('upload', $config);
+
+			if(! $this->upload->do_upload('design_file')){
+				$this->session->set_flashdata('design_upload_error', $this->upload->display_errors());
+				$this->desc_detail($pat_id, $id, 2);
+			}
+			else{
+				$this->session->set_flashdata('design_upload_msg', "file (".$this->upload->data()['file_name'].") is upload successfully!");
+				$this->desc_detail($pat_id, $id, 2);
+			}
+		}
+		public function delete_design($pat_id, $id, $name){
+			$path = "./images/DesignImg/$pat_id/$id/$name";
+			if(file_exists($path)){ 
+				unlink($path);
+			}
+			$this->desc_detail($pat_id, $id, 2);
 		}
 
 		public function upload_img($pat_id, $id){
@@ -160,18 +194,37 @@
 
 			if(! $this->upload->do_upload('img_file')){
 				$this->session->set_flashdata('upload_error', $this->upload->display_errors());
-				$this->desc_detail($pat_id, $id, true);
+				$this->desc_detail($pat_id, $id, 3);
 			}
 			else{
 				$this->session->set_flashdata('upload_msg', "file (".$this->upload->data()['file_name'].") is upload successfully!");
-				$this->desc_detail($pat_id, $id, true);
+				$this->desc_detail($pat_id, $id, 3);
 			}
 		}
 
 		public function delete_img($pat_id, $id, $name){
 			$path = "./images/PatternImg/$pat_id/$id/$name";
-			unlink($path);
-			$this->desc_detail($pat_id, $id);
+			if(file_exists($path)){
+				unlink($path);
+			}
+			$this->desc_detail($pat_id, $id, 3);
+		}
+
+		function delete_dir($path){
+			$dir = opendir($path);
+			while(false !== ($file = readdir($dir))){
+				if (( $file != '.' ) && ( $file != '..' )) {
+		            $full = $path . '/' . $file;
+		            if ( is_dir($full) ) {
+		                rrmdir($full);
+		            }
+		            else {
+		                unlink($full);
+		            }
+		        }
+			}
+			closedir($dir);
+			rmdir($path);
 		}
 	}
 ?>
