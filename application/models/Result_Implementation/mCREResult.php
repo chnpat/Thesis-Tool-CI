@@ -61,6 +61,29 @@
 			return (is_bool($metr))?array():$metr;
 		}
 
+		public function get_result_all($pat_id, $ver=NULL){
+			$condition = "pattern_id ='".$pat_id."' AND metric_id = 4";
+			$condition = $condition.(($ver != NULL AND $ver != "")? " AND desc_version = ".(float)$ver:"");
+			$result = $this->d->select('*', $condition, 'assess_result');
+			if($result != NULL){
+				foreach ($result as $key => $value) {
+					$detail_cond = "result_id = ".$value['result_id'];
+					$detail = $this->d->select('*', $detail_cond, 'assess_result_detail');
+					$result[$key]['detail'] = NULL;
+					$temp = array();
+					if($detail != NULL){
+						foreach($detail as $index => $d){
+							$temp[$d['remark']][$d['id']]['result_id'] = $d['result_id'];
+							$temp[$d['remark']][$d['id']]['variable_id'] = $d['variable_id'];
+							$temp[$d['remark']][$d['id']]['variable_score'] = $d['variable_score'];
+						}
+						$result[$key]['detail'] = $temp;
+					}
+				}
+			}
+			return $result;
+		}
+
 		public function get_result($pat_id, $ver, $ass_id){
 			$condition = "pattern_id = '".$pat_id."' AND desc_version = ".(float)$ver." AND assessor_id = ".$ass_id." AND metric_id = 4";
 			$result = $this->d->select('result_id, score', $condition, 'assess_result', 1);
