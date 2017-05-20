@@ -100,9 +100,27 @@
     					<?php } ?>
     				<?php } ?>
     				<tr>
+    					<?php if($value['metric_abberv'] == "CRE") { ?>
     					<td class="col-xs-2 <?php echo ($data['variable_name'] == "Topic Score")? "bg-gray":""; ?>" style="font-size: 8px;"><?php echo ($data['variable_name'] == "Topic Score")? "<b>".str_replace('<sub>', '<span stlye="font-size: 4px">' , str_replace('</sub>', '</span>', $data['variable_name']))."</b>":str_replace('<sub>', '<span stlye="font-size: 4px">' , str_replace('</sub>', '</span>', $data['variable_name']));?></td>
     					<td class="col-xs-8 <?php echo ($data['variable_name'] == "Topic Score")? "bg-gray":""; ?>" style="font-size: 8px;"><?=$data['variable_description']?></td>
     					<td class="col-xs-2 <?php echo ($data['variable_name'] == "Topic Score")? "bg-gray":""; ?>" style="font-size: 8px;"><?=$data['variable_score']?></td>
+    					<?php } else if($value['metric_abberv'] == "DKT") { ?>
+	    					<?php $good = ""; 
+	    					if($data['variable_score'] == 1){
+	    						$good = "success";
+	    					}
+	    					else{
+	    						$good = "danger";
+	    					}
+	    					?>
+	    					<td class="col-xs-2 <?=$good ?>" style="font-size: 8px;"><b><?php echo str_replace('<sub>', '<span stlye="font-size: 4px">' , str_replace('</sub>', '</span>', $data['variable_name']));?></b></td>
+	    					<td class="col-xs-8 <?=$good ?>" style="font-size: 8px;"><?=$data['variable_description']?></td>
+	    					<td class="col-xs-2 <?=$good ?>" style="font-size: 8px;"><?=$data['variable_score']?></td>
+    					<?php } else { ?>
+    						<td class="col-xs-2" style="font-size: 8px;"><b><?php echo str_replace('<sub>', '<span stlye="font-size: 4px">' , str_replace('</sub>', '</span>', $data['variable_name']));?></b></td>
+	    					<td class="col-xs-8" style="font-size: 8px;"><?=$data['variable_description']?></td>
+	    					<td class="col-xs-2" style="font-size: 8px;"><?=$data['variable_score']?></td>
+    					<?php } ?>
     				</tr>
     			<?php } ?>
     			</table>

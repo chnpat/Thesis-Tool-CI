@@ -30,15 +30,43 @@
 			return $pattern;
 		}
 
+		public function get_only_ready_pattern_no_assessed($dev_id = NULL){
+			$pat_list = $this->get_pattern_all();
+
+			if(!is_bool($pat_list)){
+				
+				if ($dev_id != NULL) {
+					$pat_list = array_filter($pat_list, function($pat) use($dev_id){
+						return ($pat['pattern_creator_id'] == $dev_id);
+					});
+				}
+
+				return array_filter($pat_list, function($pat) {
+					$cond = "pattern_id ='".$pat['pattern_id']."' AND desc_version =".(float)$pat['pattern_assess_version'];
+					$counter = $this->d->select('desc_assess_count', $cond, 'pattern_description')[0]['desc_assess_count'];
+					return $pat['pattern_status'] == 'Ready' AND $counter == 0;
+				});
+
+			}
+		}
+
 		public function get_pattern_by_developer($dev_id){
 			$condition = "pattern_creator_id = ".$dev_id."";
 			$pattern = $this->d->select('*', $condition, 'pattern', 1);
 			return $pattern;
 		}
 
-		public function get_pattern_unreach_limit_assess(){
+		public function get_pattern_unreach_limit_assess($dev_id=NULL){
 			$pat_list = $this->get_pattern_all();
+
 			if(!is_bool($pat_list)){
+
+				if($dev_id != NULL){
+					$pat_list = array_filter($pat_list, function($pat) use($dev_id){
+						return ($pat['pattern_creator_id'] == $dev_id);
+					});
+				}
+
 				return array_filter($pat_list, function($pat) {
 					$cond = "pattern_id ='".$pat['pattern_id']."' AND desc_version =".(float)$pat['pattern_assess_version'];
 					$counter = $this->d->select('desc_assess_count', $cond, 'pattern_description')[0]['desc_assess_count'];
@@ -49,9 +77,17 @@
 				return $pat_list;
 			}
 		}
-		public function get_pattern_reach_limit_assess(){
+		public function get_pattern_reach_limit_assess($dev_id=NULL){
 			$pat_list = $this->get_pattern_all();
+
 			if(!is_bool($pat_list)){
+
+				if($dev_id != NULL){
+					$pat_list = array_filter($pat_list, function($pat) use($dev_id){
+						return ($pat['pattern_creator_id'] == $dev_id);
+					});
+				}
+
 				return array_filter($pat_list, function($pat) {
 					$cond = "pattern_id ='".$pat['pattern_id']."' AND desc_version =".(float)$pat['pattern_assess_version'];
 					$counter = $this->d->select('desc_assess_count', $cond, 'pattern_description')[0]['desc_assess_count'];

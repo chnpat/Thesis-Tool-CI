@@ -30,7 +30,7 @@
 					<div class="panel-body">
 						<table class="table table-bordered table-striped">
 							<thead>
-								<tr style="background-color: #abb0ba;">
+								<tr style="background-color: <?=TBL_GREY?>;">
 									<th class="col-md-2 hidden-sm hidden-xs text-center">Quality Attribute</th>
 									<th class="col-md-1 hidden-sm hidden-xs text-center">Quality-Carrying Property</th>
 									<th class="col-md-3 col-sm-4 col-xs-4 text-center">Metric Name</th>

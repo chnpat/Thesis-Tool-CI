@@ -32,7 +32,7 @@
 				</div>
 				<div class="panel-body">
 		    		<table class="table table-bordered table-striped">
-		    			<tr style="background-color: #abb0ba;">
+		    			<tr style="background-color: <?=TBL_GREY;?>;">
 		    				<th class="col-md-1 col-sm-2 col-xs-2">No.</th>
 		    				<th class="col-md-3 col-sm-2 col-xs-2">Username</th>
 		    				<th class="col-md-3 col-sm-4 col-xs-6">Email Address</th>

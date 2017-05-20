@@ -35,7 +35,7 @@
 					<legend></legend>
 					<div class="panel-body">
 						<table class="table table-bordered table-striped">
-			    			<tr style="background-color: #abb0ba;">
+			    			<tr style="background-color: <?=TBL_GREY?>;">
 			    				<th class="col-md-1 text-center">Pattern ID</th>
 			    				<th class="col-md-3 text-center">Name</th>
 			    				<th class="col-md-2 hidden-sm hidden-xs text-center">Creator Name</th>

@@ -27,7 +27,7 @@
 	    	<div class="box-body table-responsive no-padding">
 		    	<div class="panel-body">
 		    		<table class="table table-bordered table-striped">
-			    		<tr style="background-color: #abb0ba;">
+			    		<tr style="background-color: <?php echo TBL_GREY; ?>;">
 			    			<th class="col-md-2 text-center">Pattern ID</th>
 			    			<th class="col-md-6">Pattern Name</th>
 			    			<th class="col-md-3 text-center">Pattern Version</th>
@@ -55,7 +55,7 @@
 	    	</div>
 			<div class="box-body table-responsive">
 	    		<table class="table table-bordered table-striped">
-		    		<tr style="background-color: #abb0ba;">
+		    		<tr style="background-color: <?=TBL_GREY;?>;">
 		    			<th class="col-md-2 col-xs-2 text-center">Pattern ID</th>
 		    			<th class="col-md-6 col-xs-6">Pattern Name</th>
 		    			<th class="col-md-3 col-xs-4 text-center">Pattern Version</th>
