@@ -1,4 +1,5 @@
 <?php 
+	use Dompdf\Dompdf;
 	class cReport extends CI_Controller{
 		public function __construct(){
 			parent::__construct();
@@ -63,11 +64,36 @@
 					$this->index($metric_w_result);
 				}
 				else{
-					// Need to add more detail
 					$this->session->set_flashdata('report_error', 'The specified version number is not existing.');
 					$this->index();
 				}
 			}
+		}
+
+		public function generate_pdf($pat_id, $ver=NULL){
+			$this->load->helper(array('dompdf', 'file'));
+			// Set Data
+			$user_id = $this->mLogin->get_user(array('email' => $this->session->userdata('email')))[0]['id'];
+			$pattern = $this->mPattern->get_pattern($pat_id);
+			$description = $this->mPatternDesc->get_pattern_description_by_pattern($pat_id, (float)$ver);
+			$report = array();
+			if(!is_bool($description)){
+				$report['result'] = $this->mAssessResult->get_all_result_by_pattern($pat_id, (float)$ver);
+				foreach ($report['result'] as $key => $value) {
+					$report['result'][$key]['detail'] = $this->mAssessResult->get_all_result_detail_w_metric($value['result_id']);
+				}
+			}
+			else{
+				$report = NULL;
+			}
+			$data = array(
+				'pattern' 		=> $pattern,
+				'description' 	=> $description,
+				'report'		=> $report
+				);
+
+			$html = $this->load->view('vPDF', $data, TRUE);
 			
+     		pdf_create($html, 'Report-'.$user_id.'-'.date('YmdHis'));
 		}
 	}

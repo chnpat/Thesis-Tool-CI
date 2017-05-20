@@ -29,9 +29,13 @@
 	    			<div class="col-md-6">
 	    				<label for="pattern_name" class="margin">Pattern: </label>
 	    				<select class="form-control margin" id="report_pattern" name="report_pattern">
-	    					<?php foreach ($pattern_list as $pattern) {?>
-	    						<option value="<?php echo $pattern['pattern_id']; ?>" <?php echo ($report['info']['pattern_id'] == $pattern['pattern_id'])?"selected='selected'":"";?> ><?php echo $pattern['pattern_id'];?>: <?php echo $pattern['pattern_name']; ?></option>
-	    					<?php }?>
+	    					<?php if($pattern_list != NULL){ ?>
+		    					<?php foreach ($pattern_list as $pattern) {?>
+		    						<option value="<?php echo $pattern['pattern_id']; ?>" <?php echo ($report['info']['pattern_id'] == $pattern['pattern_id'])?"selected='selected'":"";?> ><?php echo $pattern['pattern_id'];?>: <?php echo $pattern['pattern_name']; ?></option>
+		    					<?php } ?>
+	    					<?php } else { ?>
+	    						<option value="0">No pattern added.</option>
+	    					<?php } ?>
 	    				</select>
 	    			</div>
 	    			<div class="col-md-6">
@@ -70,7 +74,7 @@
 							    		<h3 class="timeline-header">
 		    							<?php 
 		    							$this->load->model('mLogin');
-		    							echo "<span class='text text-primary'><b>".$this->mLogin->get_user_by_id($result['assessor_id'])[0]['user_name']."</b></span> are assessed on version ".$result['desc_version']." of this pattern."; ?>
+		    							echo "<span class='text text-primary'><b>".$this->mLogin->get_user_by_id($result['assessor_id'])[0]['user_name']."</b></span> are assessed on version <b>".$result['desc_version']."</b>"; ?>
 		    							</h3>
 		    							<div class="timeline-body">
 							    			<div class="box-group" id="accordion_<?=$result['assessor_id']?>_<?=$m?>">
@@ -272,9 +276,15 @@
 	    			<li><i class="fa fa-clock-o bg-grey"></i></li>
     			</ul>
     		</div>
-    		<div class="box-footer">
-
-    		</div>
+    		<?php if($report['data']['result']['PAP'] != NULL OR $report['data']['result']['CRE'] != NULL OR $report['data']['result']['CSD'] != NULL OR $report['data']['result']['DKT'] != NULL ) { ?>
+	    		<div class="box-footer">
+	    			<?php if($report['info']['version'] != NULL) { ?>
+	    				<a href="<?php echo base_url(); ?>cReport/generate_pdf/<?=$report['info']['pattern_id']?>/<?=$report['info']['version']?>" class="btn bg-maroon"><i class="fa fa-file-pdf-o"></i> Create PDF file</a>
+	    			<?php } else { ?>
+	    				<a href="<?php echo base_url(); ?>cReport/generate_pdf/<?=$report['info']['pattern_id']?>" class="btn bg-maroon"><i class="fa fa-file-pdf-o"></i> Create PDF file</a>
+	    			<?php } ?>
+	    		</div>
+    		<?php } ?>
     	</div>
     	<?php } ?>
     </section>

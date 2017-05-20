@@ -56,6 +56,25 @@
 			return $result;
 		}
 
+		public function get_result_no_detail($pat_id, $ver=NULL){
+			$condition = "pattern_id ='".$pat_id."' AND metric_id = 2";
+			$condition = $condition.(($ver != NULL AND $ver != "")? " AND desc_version = ".(float)$ver:"");
+			$result = $this->d->select('*', $condition, 'assess_result');
+			return $result;
+		}
+
+		public function get_joined_detail_result($pat_id, $ver = NULL){
+			$condition = "metric_id = 2";
+			$condition = $condition.(($ver != NULL AND $ver != "")? " AND desc_version = ".(float)$ver:"");
+			$result = $this->d->select_joined(	'metric_variable.id, metric_variable.metric_id, metric_variable.variable_name, metric_variable.variable_description, assess_result_detail.*', 
+												$condition,
+												'assess_result_detail',
+												'metric_variable',
+												'assess_result_detail.variable_id = metric_variable.id',
+												'left' );
+			return $result;
+		}
+
 		public function get_result($pat_id, $ver, $ass_id){
 			$condition = "pattern_id = '".$pat_id."' AND desc_version = ".(float)$ver." AND assessor_id = ".$ass_id." AND metric_id = 2";
 			$result = $this->d->select('result_id, score', $condition, 'assess_result', 1);

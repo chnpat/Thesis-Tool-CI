@@ -41,6 +41,22 @@
 			}
 		}
 
+		public function select_joined($select, $cond, $from, $join_tbl, $join_cond, $join_type = NULL){
+			$this->db->select($select);
+			if($cond != "")			{	$this->db->where($cond);	}
+			$this->db->from($from);
+			if($join_type != NULL) 	{	$this->db->join($join_tbl, $join_cond, $join_type);		}
+			else 					{	$this->db->join($join_tbl, $join_cond);					}
+
+			$query = $this->db->get();
+			if($query->num_rows() > 0){
+				return $query->result_array();
+			}
+			else{
+				return false;
+			}
+		}
+
 		public function select_grouped($select, $cond, $from, $groupby){
 			$this->db->select($select);
 			if($cond != ""){
