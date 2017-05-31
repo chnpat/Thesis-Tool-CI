@@ -23,7 +23,6 @@
     	<link href="<?php echo URL; ?>assets/dist/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />
     	<!-- Defined style sheet -->
         <link rel="stylesheet" type="text/css" href="<?php echo CSS; ?>style.css">
-        <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/plugins/ckeditor/lib/highlight/styles/default.css"> -->
 
 
         <!-- 
@@ -39,26 +38,20 @@
         	var baseURL = "<?php echo base_url(); ?>";
     	</script>
     	<script type="text/javascript" src="<?php echo base_url(); ?>assets/plugins/ckeditor/ckeditor.js"></script>
-    	<!-- <script type="text/javascript" src="<?php echo base_url(); ?>assets/plugins/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js"></script> -->
     </head>
     <body class="skin-red sidebar-mini">
     	<div class="wrapper">
     		<header class="main-header">
-    			<!-- logo -->
     			<a href="<?php echo base_url(); ?>cDashboard/index" class="logo" >
-    				<!-- mini logo -->
     				<span class="logo-mini"><b>QAM</b></span>
-    				<!-- normal logo -->
     				<span class="logo-lg"><b>QAM-OODP</b> Tool</span>
     			</a>
-    			<!-- Navigation bar -->
     			<nav class="navbar navbar-static-top" role="navigation">
     				<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
             			<span class="sr-only">Toggle navigation</span>
           			</a>
           			<div class="navbar-custom-menu">
 			            <ul class="nav navbar-nav">
-			              	<!-- User Account: style can be found in dropdown.less -->
 			              	<li class="dropdown user user-menu">
 			                	<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 			                	<?php if($userObj['user_role'] == 'Admin') { ?>
@@ -97,7 +90,6 @@
 				                      	?></small>
 				                    	</p>
 				                  	</li>
-				                  	<!-- Menu Footer-->
 				                  	<li class="user-footer">
 				                    	<div class="pull-left">
 				                      		<a href="<?php echo base_url(); ?>cChangePassword/index" class="btn btn-default btn-flat"><i class="fa fa-key"></i> Change Password</a>
@@ -112,11 +104,8 @@
 			        </div>
 			    </nav>
     		</header>
-    		<!-- Left side column. contains the logo and sidebar -->
       		<aside class="main-sidebar">
-        		<!-- sidebar: style can be found in sidebar.less -->
         		<section class="sidebar">
-          			<!-- sidebar menu: : style can be found in sidebar.less -->
           			<ul class="sidebar-menu">
             			<li class="header">MENU</li>
             			<li class="treeview">
@@ -156,5 +145,4 @@
             			</li>
         			</ul>
         		</section>
-        	<!-- /.sidebar -->
       		</aside>

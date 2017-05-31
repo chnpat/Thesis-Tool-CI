@@ -7,14 +7,11 @@
     </section>
     <section class="content">
     	<div class="row">
-            <!-- left column -->
             <div class="col-md-12">
-              <!-- general form elements -->
                 <div class="box box-danger">
                     <div class="box-header">
                         <h3 class="box-title">Add/Edit User Details</h3>
-                    </div><!-- /.box-header -->
-                    <!-- form start -->
+                    </div>
                     <form role="form" id="addUser" action="
                     <?php if(empty($userDetail)) { 
                     		echo base_url(); ?>cUserManagement/add_user
@@ -98,7 +95,7 @@
                                     </div>
                                 </div>    
                             </div>
-                        </div><!-- /.box-body -->
+                        </div>
     
                         <div class="box-footer">
                             <input type="submit" class="btn btn-primary" value="Submit" />

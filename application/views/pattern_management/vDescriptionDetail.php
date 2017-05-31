@@ -21,13 +21,11 @@
 		    <?php } ?>
 		</div>
 		<div class="row">
-            <!-- left column -->
             <div class="col-md-12">
-              	<!-- general form elements -->
                 <div class="box box-danger">
                     <div class="box-header">
                         <h3 class="box-title">Add/Edit Pattern Description Details</h3>
-                    </div><!-- /.box-header -->
+                    </div>
                     <ul class="nav nav-tabs">
                     	<li class="<?php echo ($tabs == 1)?'active':''; ?>"><a href="#desc_form" data-toggle="tab" aria-expanded="false" class="text text-danger">Description Form</a></li>
                     	<?php if(!empty($rows)) { ?>

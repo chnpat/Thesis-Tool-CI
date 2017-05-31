@@ -22,7 +22,6 @@
     	<link href="<?php echo URL; ?>assets/dist/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />
     	<!-- Defined style sheet -->
         <link rel="stylesheet" type="text/css" href="<?php echo CSS; ?>style.css">
-        <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/plugins/ckeditor/lib/highlight/styles/default.css"> -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
   		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     </head>

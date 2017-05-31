@@ -8,12 +8,10 @@
     <section class="content">
         <div class="row">
             <div class="col-md-4">
-              <!-- general form elements -->
                 <div class="box box-danger">
                     <div class="box-header">
                         <h3 class="box-title">Enter Details</h3>
-                    </div><!-- /.box-header -->
-                    <!-- form start -->
+                    </div>
                     <form role="form" action="<?php echo base_url() ?>cChangePassword/change_process" method="post">
                         <div class="box-body">
                             <div class="row">
@@ -41,7 +39,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div><!-- /.box-body -->
+                        </div>
     
                         <div class="box-footer">
                             <input type="submit" class="btn btn-primary" value="Submit" />

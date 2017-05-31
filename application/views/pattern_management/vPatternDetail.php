@@ -21,13 +21,11 @@
 		    <?php } ?>
 		</div>
     	<div class="row">
-            <!-- left column -->
             <div class="col-md-12">
-              	<!-- general form elements -->
                 <div class="box box-danger">
                     <div class="box-header">
                         <h3 class="box-title">Add/Edit Pattern Details</h3>
-                    </div><!-- /.box-header -->
+                    </div>
 	                <form role="form" id="addUser" action="
 	                    <?php if(empty($rows)) { 
 	                    		echo base_url(); ?>cPattern/add_pattern
